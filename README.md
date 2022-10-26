@@ -35,7 +35,7 @@ The setup script creates the following resources:
 2. An Amazon DynamoDB table populated with leaderboard data.
 The leaderboard is already pre-seeded with 25 users (json file is resources/website/all_gamers.json). The leaderboard avatars were generated using the 3rd party API [DiceBear Avatars](https://avatars.dicebear.com/).
 3. A REST API configured using Amazon API Gateway.
-    4. All game data is exposed at /leaderboard (GET)
-    5. Data for the top six players is exposed at /leaderboard/top_players (GET)
-    6. Score submission endpoint is exposed at /score/submit (POST).
-7. A Lambda function that retrieves data from DynamoDB when invoked. There is a policy that gives the Lambda function access to DynamoDB.
+  - All game data is exposed at /leaderboard (GET)
+  - Data for the top six players is exposed at /leaderboard/top_players (GET)
+  - Score submission endpoint is exposed at /score/submit (POST).
+4. A Lambda function that retrieves data from DynamoDB when invoked. There is a policy that gives the Lambda function access to DynamoDB.
