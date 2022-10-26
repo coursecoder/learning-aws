@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-Us">
+
+<head>
+	<title>Playdough Games</title>
+	<link href="/favicon.ico" rel="icon" type="image/x-icon" />
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Zen+Dots&display=swap"
+		rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet"> -->
+	<link rel="stylesheet" href="styles/reset.css" />
+	<link rel="stylesheet" href="styles/main.css" />
+	<link rel="stylesheet" href="styles/navigation.css" />
+	<link rel="stylesheet" href="styles/leaderboard.css" />
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+	<section>
+		<header data-expanded="not_expanded">
+			<h1>
+				Playdough Games
+			</h1>
+			<span data-action="toggle_navigation"></span>
+			<ul>
+				<li data-action="go_to" data-role="about_us">about us</li>
+				<li data-action="go_to" data-role="browse_leaderboard">leaderboard</li>
+				<li data-action="go_to" data-role="view_docs">documentation</li>
+				<li data-action="go_to" data-role="contact_us">contact us</li>
+			</ul>
+			<aside data-action="attempt_login">login</aside>
+		</header>
+		<div class="main_image"></div>
+
+		<main>
+
+			<section data-role="about_us_content">
+				<a name="about_us">back to top</a>
+				<h2>About Us</h2>
+				<p>
+					Welcome!
+					<br><br>
+					The purpose of this work is to develop and deploy a leaderboard for your game using the following
+					AWS resources: S3, APIGateway, Lambda, IAM, and DynamoDB. The choice of a highly available,
+					scalable, and secure serverless environment with massive economies of scale will have several
+					benefits to the end user, including: low product pricing, fast response and reliable uptime.
+
+					<br><br>
+					Use the ACCELERATE button below to stay in the air!
+				<div style="width:100%; padding-bottom:0%; position:relative; background-color: #343434;">
+					<iframe src="game.html" style="background-color: #343434; position:relative; top:0%; left:15%; 
+  width:800px;height:450px; border: none; overflow: hidden;"></iframe>
+				</div>
+				</p>
+
+			</section>
+
+			<section data-role="browse_leaderboard_content">
+				<a name="browse_leaderboard">back to top</a>
+				<h2>Leaderboard</h2>
+				<aside>
+					Add a leaderboard to your game with AWS resources. The player data below is stored in a DynamoDB
+					table!
+				</aside>
+				<span data-selected="not_selected" data-action="show_all">view all</span>
+				<span data-selected="selected" data-action="show_top_gamer">top 6</span>
+				<output data-role="toast"></output>
+			</section>
+
+			<section data-role="browse_documentation">
+				<a name="view_docs">back to top</a>
+				<h2>documentation</h2>
+				<aside>
+					<br>
+					&nbsp;&nbsp;
+					Spin up your own simple game displaying pre-seeded Leaderboard data using the documentation over on
+					<a href="https://github.com/Fullstack-Playdough-Team/Team-Playdough">GitHub</a>.
+					<br>
+					&nbsp;&nbsp;
+					You will be up and running in no time.
+					<br><br><br>
+				</aside>
+			</section>
+
+			<section data-role="contact_us_content">
+				<a name="contact_us">back to top</a>
+				<h2>contact us</h2>
+				<p>
+					Coleen Stanley
+				</p>
+			</section>
+		</main>
+		<footer>
+			<span>&copy; 2022, Playdough Games. All rights reserved.</span>
+		</footer>
+	</section>
+	<script src="config.js"></script>
+	<script src="scripts/jquery-3.6.0.min.js"></script>
+	<script src="scripts/main.js"></script>
+	<script src="scripts/navigation.js"></script>
+	<script src="scripts/leaderboard.js"></script>
+
+
+</body>
+
+</html>
