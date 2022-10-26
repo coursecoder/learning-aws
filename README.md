@@ -12,7 +12,6 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 - **resources Folder:** This folder contains the initial setup script as well as the infrastructure for the frontend. 
     - **website Folder:** This folder contains all the images and code necessary to build a functional game with leaderboard.
 
-[See a Live Example Here](https://playdough-leaderboard.s3.amazonaws.com/index.html)
 
 ## Requirements
 
