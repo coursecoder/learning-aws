@@ -5,7 +5,7 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 - reliable uptime
 
 ## Leaderboard Architecture
-![Playdough AWS Architecture](https://github.com/Fullstack-Playdough-Team/Team-Playdough/blob/media/Playdough-AWS-Architecture.png)
+![AWS Architecture](https://github.com/coursecoder/learning-aws/blob/media/Playdough-AWS-Architecture.png)
 
 ## Project Organization
 - **python_3 Folder:** This folder contains all python scripts that are used to build AWS infrastructure on the backend.
