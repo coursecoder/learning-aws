@@ -6,6 +6,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'python3 --version'
+                echo 'This is my test of Jenkins CI/CD pipeline'
             }
         }
     }
