@@ -67,90 +67,30 @@ top_gamer_integration = client.put_integration(
     uri = f"arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/{lambda_arn}/invocations",
     requestTemplates={
         'application/json': '{"statusCode": 200}'
-    # need to add this as mapping template
+    # need to add this as mapping template?
     #{
     # "path": "$context.resourcePath"
     #}
     }
 )
 
+# get account id of the current aws user
+account_id = boto3.client('sts').get_caller_identity().get('Account')
+
+# add permission for API to trigger Lambda function
+permission_response = lambda_client.add_permission(
+    FunctionName=function_name,
+    StatementId='playdough-apigateway-get2',
+    Action='lambda:InvokeFunction',
+    Principal='apigateway.amazonaws.com',
+    SourceArn=f"arn:aws:execute-api:us-east-1:{account_id}:{api_id}/*/GET/leaderboard/top_gamer"
+) 
+
 top_gamer_integration_response = client.put_integration_response(
     restApiId=api_id,
     resourceId=top_gamer_resource_id,
     httpMethod='GET',
     statusCode='200',
-    responseTemplates={
-        "application/json": json.dumps({
-	"leaderboard_item_arr": [
-		{
-			"gamer_name_str": "hooper",
-			"gamer_id_str": "a448",
-			"score_int": 3004,
-			"rank_int": 1,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		},
-		{
-			"gamer_name_str": "mattie",
-			"gamer_id_str": "a455",
-			"score_int": 2468,
-			"rank_int": 2,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		},
-		{
-			"gamer_name_str": "cunningham",
-			"gamer_id_str": "a452",
-			"score_int": 1201,
-			"rank_int": 3,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		},
-		{
-			"gamer_name_str": "nixon",
-			"gamer_id_str": "a444",
-			"score_int": 1129,
-			"rank_int": 4,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		},
-		{
-			"gamer_name_str": "miles",
-			"gamer_id_str": "a463",
-			"score_int": 1019,
-			"rank_int": 5,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		},
-		{
-			"gamer_name_str": "parks",
-			"gamer_id_str": "a465",
-			"score_int": 1005,
-			"rank_int": 6,
-			"tag_str_arr": [
-				"not registered",
-				"top gamer"
-			],
-			"special_int": 1
-		}
-	]
-})
-    },
     responseParameters={
         'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
         'method.response.header.Access-Control-Allow-Methods': "'GET'",
@@ -159,10 +99,5 @@ top_gamer_integration_response = client.put_integration_response(
 )
 
 
-# deploy API to prod
-deployment_response = client.create_deployment(
-    restApiId=api_id,
-    stageName='prod',
-)
 
 print ("DONE")

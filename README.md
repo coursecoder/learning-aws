@@ -5,12 +5,14 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 - reliable uptime
 
 ## Leaderboard Architecture
-![AWS Architecture](https://github.com/coursecoder/learning-aws/blob/media/Playdough-AWS-Architecture.png)
+![Playdough AWS Architecture](https://github.com/coursecoder/leaderboard-aws/blob/media/Playdough-AWS-Architecture.png)
 
 ## Project Organization
 - **python_3 Folder:** This folder contains all python scripts that are used to build AWS infrastructure on the backend.
 - **resources Folder:** This folder contains the initial setup script as well as the infrastructure for the frontend. 
     - **website Folder:** This folder contains all the images and code necessary to build a functional game with leaderboard.
+
+[See a Live Example Here](https://playdough-leaderboard.s3.amazonaws.com/index.html)
 
 ## Requirements
 - **AWS CLI:** See the [Getting started guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) in the *AWS CLI User Guide* for more information.
@@ -18,13 +20,10 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 - **AWS SDK for Python:** You will need to be running the latest Boto3 release. See the [Boto3 Quickstart](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more information.
 
 ## Installation Instructions
-### Step 1: Download project files
-<pre><code>wget <path-to-code-on-github>
+### Step 1: Clone the repo
+<pre><code>git clone https://github.com/Fullstack-Playdough-Team/Team-Playdough.git
 </code></pre>
-### Step 2: Unzip project files
-<pre><code>unzip code.zip
-</code></pre>
-### Step 3: Run setup script
+### Step 2: Run setup script
 - Set permissions on the script so that you can run it, and then run it:
 <pre><code>chmod +x ./resources/setup.sh && ./resources/setup.sh
 </code></pre>
@@ -33,9 +32,11 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 The setup script creates the following resources:
 1. An S3 bucket with an associated bucket policy. The bucket contains the game website code.
 2. An Amazon DynamoDB table populated with leaderboard data.
-The leaderboard is already pre-seeded with 25 users (json file is resources/website/all_gamers.json). The leaderboard avatars were generated using the 3rd party API [DiceBear Avatars](https://avatars.dicebear.com/).
+The leaderboard is already pre-seeded with 25 users (json file is resources/website/all_gamers.json). The leaderboard avatars are generated using the 3rd party API [DiceBear Avatars](https://avatars.dicebear.com/).
 3. A REST API configured using Amazon API Gateway.
     - All game data is exposed at /leaderboard (GET)
     - Data for the top six players is exposed at /leaderboard/top_players (GET)
     - Score submission endpoint is exposed at /score/submit (POST).
-4. A Lambda function that retrieves data from DynamoDB when invoked. There is a policy that gives the Lambda function access to DynamoDB.
+4. Two Lambda functions are created
+    - **get_all_leaderboard** function is used by the two GET endpoints to retrieve data from DynamoDB when invoked. There is a policy that gives the Lambda function permission to read data from DynamoDB.
+    - **submit_score** function is used by the POST endpoint to put data to DynamoDB. The policy gives the Lambda function permission to update the DynamoDB data.
