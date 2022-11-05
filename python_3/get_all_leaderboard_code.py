@@ -1,26 +1,26 @@
 import boto3, json
-from boto3.dynamodb.conditions import Key
 from boto3.dynamodb.conditions import Key, Attr, Not
 
 TABLE_NAME_STR = 'LeaderBoard'
 INDEX_NAME_STR = 'special_GSI'
 DDB = boto3.resource('dynamodb', region_name='us-east-1')
+TABLE = DDB.Table(TABLE_NAME_STR)
     
 def lambda_handler(event, context):
-   # if top_gamer path exists then scan table for top gamers
-    topgamers_path_str = event.get('path')
-    if topgamers_path_str is not None:
-        return scan_index(event, context)
+   # determine which api call was made
+    path_str = event.get('path')
+    #if '/leaderboard' was called scan entire table:
+    if path_str == "/leaderboard":
+        return scan_table(event, context)
     else:
-        pass
-    print("Running scan on table...")
-    
-    DDB = boto3.resource('dynamodb', region_name='us-east-1')
-
-    TABLE = DDB.Table(TABLE_NAME_STR)
-    
-    response = TABLE.scan()
-    
+        # return top gamers with score greater than 3000
+        response = TABLE.query(
+            IndexName=INDEX_NAME_STR,
+            ScanIndexForward=False,
+            KeyConditionExpression=Key('special').eq(1),
+            #FilterExpression=Attr("score").gte(3000)
+        )
+        
     data = response['Items']
     
 
@@ -52,26 +52,19 @@ def lambda_handler(event, context):
     
     return return_me
     
-def scan_index(event, context):
+def scan_table(event, context):
 
     print("Running scan on index...")
     ## event and context not used
     TABLE = DDB.Table(TABLE_NAME_STR)
 
     
-    response = TABLE.scan(
-        IndexName=INDEX_NAME_STR,
-        FilterExpression=Attr("tags").contains("top gamer")
-    )
+    response = TABLE.scan()
 
     data = response['Items']
 
     while 'LastEvaluatedKey' in response:
-        response = TABLE.scan(
-            ExclusiveStartKey=response['LastEvaluatedKey'],
-            IndexName=INDEX_NAME_STR,
-            FilterExpression=Attr("tags").contains("top gamer")
-        )
+        response = TABLE.scan()
         print("We needed to paginate and extend the response")
         data.extend(response['Items'])
         
@@ -96,5 +89,3 @@ def scan_index(event, context):
         "leaderboard_item_arr": data
     }
     return return_me
-
-    
