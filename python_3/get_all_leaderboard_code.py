@@ -17,7 +17,8 @@ def lambda_handler(event, context):
         response = TABLE.query(
             IndexName=INDEX_NAME_STR,
             ScanIndexForward=False,
-            KeyConditionExpression=Key('special').eq(1),
+            KeyConditionExpression=Key('special').eq(1) & Key('score').gt(3000),
+            #KeyConditionExpression=Key('score').gt(3000),
             #FilterExpression=Attr("score").gte(3000)
         )
         
