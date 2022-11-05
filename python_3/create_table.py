@@ -8,14 +8,16 @@ def create_table():
     params = {
         'TableName': 'LeaderBoard',
         'KeySchema': [
-            {'AttributeName': 'gamer_name', 'KeyType': 'HASH'}
+            {'AttributeName': 'gamer_name', 'KeyType': 'HASH'},
+            {'AttributeName': 'score', 'KeyType': 'RANGE'}
         ],
         'AttributeDefinitions': [
-            {'AttributeName': 'gamer_name', 'AttributeType': 'S'}
+            {'AttributeName': 'gamer_name', 'AttributeType': 'S'},
+             {'AttributeName': 'score', 'AttributeType': 'N'}
         ],
         'ProvisionedThroughput': {
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
+            'ReadCapacityUnits': 10,
+            'WriteCapacityUnits': 10
         }
     }
     table = DDB.create_table(**params)

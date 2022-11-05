@@ -28,24 +28,27 @@ var LEADERBOARD = (function () {
 		printItems("todo");
 	}
 
+	// if there is no API Gateway, read data from all_gamers.json
 	function loadAllItems() {
 		$("[data-role='browse_leaderboard_content'] > section").remove();
 		if (window.LEADERBOARD_CONFIG.API_GW_BASE_URL_STR === null) {
 			$.get("all_gamers.json", printItems);
-		} else {
+		} else { // if there is an API Gateway, read data from endpoint
 			$.get(window.LEADERBOARD_CONFIG.API_GW_BASE_URL_STR + "/leaderboard", printItems);
 		}
 	}
 
+	// if there is no API Gateway, read data from all_gamers.json
 	function loadItemsByTag() {
 		$("[data-role='browse_leaderboard_content'] > section").remove();
 		var tag_name_str = "top_gamer";
 		if (window.LEADERBOARD_CONFIG.API_GW_BASE_URL_STR === null) {
 			$.get("all_gamers.json", printItems);
-		} else {
+		} else { // if there is an API Gateway, read data from endpoint
 			$.get(window.LEADERBOARD_CONFIG.API_GW_BASE_URL_STR + "/leaderboard/" + tag_name_str, printItems);
 		}
 	}
+
 
 	function printItems(response) {
 		var html_str = '';
@@ -55,19 +58,12 @@ var LEADERBOARD = (function () {
 				o = response.leaderboard_item_arr[i_int];
 
 				html_str += '<div data-gamer_id="' + o.gamer_id_str + '">';
-
-
-
 				html_str += '<h3>';
 				html_str += o.gamer_name_str;
 				html_str += '</h3>';
 				html_str += '<h4>' + (o.score_int) + '</h4>';
-				html_str += '<section>';
-				html_str += '<span>';
-				html_str += o.rank_int;
-				html_str += '</span>';
-				html_str += '</section>';
-				html_str += '<img src="images/items/' + formatWithUnderscores(o.gamer_name_str) + '.svg" alt="Image for ' + o.gamer_name_str + '" />';
+
+				html_str += '<img src="https://avatars.dicebear.com/api/adventurer-neutral/' + formatWithUnderscores(o.gamer_name_str) + '.svg" alt="Image for ' + o.gamer_name_str + '" />';
 				html_str += '</div>';
 			}
 		}
@@ -107,6 +103,7 @@ var LEADERBOARD = (function () {
 			$card_el.attr("data-showing-description", "showing");
 		}
 	}
+
 
 	return expose;
 

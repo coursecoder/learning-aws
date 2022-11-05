@@ -6,21 +6,9 @@
             "Principal": "*",
             "Action": "s3:GetObject",
             "Resource": [
-                "arn:aws:s3:::<bucket_name>/*",
-                "arn:aws:s3:::<bucket_name>"
+                "arn:aws:s3:::playdough-leaderboard/*",
+                "arn:aws:s3:::playdough-leaderboard"
             ]
-        },
-        {
-            "Sid": "DenyOneObjectIfRequestNotSigned",
-            "Effect": "Deny",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::<bucket_name>/report.html",
-            "Condition": {
-                "StringNotEquals": {
-                    "s3:authtype": "REST-QUERY-STRING"
-                }
-            }
         }
     ]
 }

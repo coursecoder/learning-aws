@@ -20,5 +20,5 @@ def get_api_url():
         return url
 
 if __name__ == '__main__':
-    api_url = get_api_url()
-    print(api_url)
+        api_url = get_api_url()
+        print(api_url)

@@ -3,21 +3,44 @@
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="stylesheet" href="styles/leaderboard.css" />
 	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Zen+Dots&display=swap"
 		rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<style>
 		canvas {
 			border: 1px solid #000000;
 			background-color: #464646;
 		}
+
+		input {
+
+			line-height: 1.4;
+			color: rgb(0, 0, 0);
+			font-size: 14px;
+			font-weight: 400;
+			height: 15px;
+			font-size: 1.2rem;
+			margin-left: 9rem;
+			margin-top: 0.7rem;
+			padding: 1rem 2rem;
+			background-color: #464646;
+			border: #434343;
+			width: 225px;
+
+		}
 	</style>
 </head>
 
 <body style="background-color:#343434" onload="startGame()">
-	<script>
 
+	<button class="button-32" role="button" onmousedown="accelerate(-0.2)"
+		onmouseup="accelerate(0.05)">ACCELERATE</button><br>
+	<button class="button-28" role="button" onmousedown="location. reload()">PLAY AGAIN</button>
+	<input placeholder="Enter your name here" id="gamer-name-input"></input>
+	<button class="button-92" role="button" id="submit-score-button"> SAVE SCORE </button>
+
+	<script>
 		var myGamePiece;
 		var myObstacles = [];
 		var myScore;
@@ -134,10 +157,39 @@
 		function accelerate(n) {
 			myGamePiece.gravity = n;
 		}
-	</script><br>
-	<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button> <button
-		onmousedown="location. reload()">PLAY AGAIN</button>
 
+		//PROJECT CODE
+		const button = document.getElementById('submit-score-button');
+
+		button.addEventListener('click', async _ => {
+			try {
+				gamerData = {
+					//get the name and score
+					gamer_name: document.getElementById('gamer-name-input').value,
+					gamer_score: myGameArea.frameNo
+				}
+				// console.log('Score Input Value: ' + document.getElementById('gamer-name-input').value)
+				console.log('Gamer Data: ' + JSON.stringify(gamerData))
+				// API_GATEWAY_ENDPOINT_URL_FOR_POSTING_SCORE
+				const response = await fetch(window.LEADERBOARD_CONFIG.API_GW_BASE_URL_STR + "/score/submit", {
+					method: 'POST',
+					mode: 'no-cors',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(gamerData)
+				});
+				console.log('Successfully added score to leaderboard!', response);
+			} catch (err) {
+				console.error(`Error: ${err}`);
+			}
+			// clear input field
+			document.getElementById('gamer-name-input').value = '';
+		});
+
+	</script>
+	<script src="config.js"></script>
+	<br>
 </body>
 
 </html>

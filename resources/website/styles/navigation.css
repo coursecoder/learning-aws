@@ -43,12 +43,12 @@ header>span:hover {
 }
 
 header[data-expanded="not_expanded"]>span {
-    background-image: url("/images/not_expanded.png");
+    background-image: url("../images/not_expanded.png");
     opacity: 0.4;
 }
 
 header[data-expanded="expanded"]>span {
-    background-image: url("/images/expanded.png");
+    background-image: url("../images/expanded.png");
     opacity: 0.4;
 }
 

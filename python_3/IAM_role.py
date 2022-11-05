@@ -13,7 +13,14 @@ def create_iam_role():
                 "Service": "lambda.amazonaws.com"
             },
             "Action": "sts:AssumeRole"
-                }
+            },
+            {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "events.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+            }
         ]                                               
     })
     
@@ -52,6 +59,7 @@ def create_iam_policy():
                     "dynamodb:Describe*",
                     "dynamodb:List*",
                     "dynamodb:GetItem",
+                    "dynamodb:PutItem",
                     "dynamodb:Query",
                     "dynamodb:Scan",
                     "dynamodb:PartiQLSelect",
@@ -86,11 +94,17 @@ def create_iam_policy():
                 "Resource": "*"
             },
             {
-                "Action": "cloudwatch:GetInsightRuleReport",
-                "Effect": "Allow",
-                "Resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*"
-            }
-           
+            "Sid": "CloudWatchEventsFullAccess",
+            "Effect": "Allow",
+            "Action": "events:*",
+            "Resource": "*"
+            },
+            {
+            "Sid": "IAMPassRoleForCloudWatchEvents",
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::*:role/AWS_Events_Invoke_Targets"
+            }   
         ]
     }
     response = iam.create_policy(

@@ -4,19 +4,20 @@
 echo "Enter a name for your bucket. It must end with -leaderboard: "
 read bucket_name
 
+######################################### BUILD #########################################
+
 # create s3 bucket using the name provided and make it an environment variable
 echo "Creating S3 bucket..."
 sleep 2
 bucket=`aws s3api create-bucket --bucket ${bucket_name} --region us-east-1 | xargs` >> ~/.bashrc
 # create s3 bucket url 
-echo export bucket_url="https://${bucket_name}.s3-us-east-1.amazonaws.com/index.html" >> ~/.bashrc
+echo export bucket_url="https://${bucket_name}.s3.amazonaws.com/index.html" >> ~/.bashrc
 
 # configure the bucket as a static website
 aws s3 website s3://${bucket_name}/ --index-document index.html
 
 # update bucket policy with bucket name 
 FILE_PATH_1="./resources/s3_policy.json"
-sed -i "s/<bucket_name>/$bucket_name/g" $FILE_PATH_1
 sed -i "s/<bucket_name>/$bucket_name/g" $FILE_PATH_1
 sed -i "s/<bucket_name>/$bucket_name/g" $FILE_PATH_1
 
@@ -27,15 +28,14 @@ sed -i "s/<bucket_name>/$bucket_name/g" $FILE_PATH_2
 # run script to attach bucket policy to S3 bucket
 python3 ./resources/put_bucket_policy.py
 
+# generate random playdough header image and download it
+#img_url=$(python3 ./python_3/generate_header_img.py)
+#wget --output-document=./resources/website/images/main_playdough.png $img_url
 
 # copy files to S3 bucket
 echo "Copying website files to S3 bucket..."
 sleep 2
 aws s3 cp ./resources/website s3://$bucket_name/ --recursive --cache-control "max-age=0"
-
-# add CORS rule to bucket
-# aws s3api put-bucket-cors --bucket ${bucket_name} --cors-configuration '{"CORSRules" : [{"AllowedHeaders":["Authorization"],"AllowedMethods":["GET","HEAD"],"AllowedOrigins":["https://$bucket_name.s3.amazonaws.com"],"ExposeHeaders":["Access-Control-Allow-Origin"]}]}'
-
 
 # create DynamoDB table
 python3 ./python_3/create_table.py
@@ -47,20 +47,25 @@ python3 ./python_3/batch_put.py
 python3 ./python_3/add_gsi.py
 
 #zip ./python_3/get_all_products_code.py 
-# copy lambda function to S3 bucket
+# copy lambda functions to S3 bucket
 aws s3 cp ./python_3/get_all_leaderboard_code.zip s3://$bucket_name/ --cache-control "max-age=0"
+aws s3 cp ./python_3/submit_score_code.zip s3://$bucket_name/ --cache-control "max-age=0"
 
-# create IAM role and Lambda 
+# create IAM role and GET Lambda 
 python3 ./python_3/create_iam_and_lambda.py
 
+######################################### DEPLOY #########################################
 # create LeaderBoardAPI and create /leaderboard endpoint
 python3 ./python_3/create_leaderboard_api.py
 
 # create /leaderboard/top_gamer endpoint
 python3 ./python_3/create_top_gamer_api.py
 
+# create POST lambda
+python3 ./python_3/create_submit_lambda.py
+
 # create and deploy /score/submit POST endpoint
-#python3 ./python_3/create_submit_score_api.py
+python3 ./python_3/create_submit_score_api.py
 
 
 # get the base url for api gateway and update config file 
@@ -73,7 +78,5 @@ sed -i "0,/null/{s,null,\"$api_url\",g}" $FILE_PATH_3
 # upload config.js file with API Gateway invoke url to S3 bucket
 python3 ./python_3/update_config.py
 
-echo "Your game website and leaderboard is available at: "
-echo export bucket_url="https://${bucket_name}.s3-us-east-1.amazonaws.com/index.html" >> ~/.bashrc
-
-######################################################
+echo "Your game website and leaderboard is now available on AWS!"
+echo export bucket_url="https://${bucket_name}.s3.amazonaws.com/index.html" >> ~/.bashrc
