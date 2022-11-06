@@ -16,6 +16,7 @@ def lambda_handler(event, context):
     # pass in pre-generated variables
     tags = ['not registered', 'top gamer']
     rank = 1
+    special = 1
 
     # this will search for dynamoDB table 
     table = client.Table("LeaderBoard")
@@ -28,6 +29,7 @@ def lambda_handler(event, context):
             'gamer_id': gamer_id_str,
             'tags' : tags,
             'rank' : rank,
+            'special' : special,
             'score' : int(score_int)
         }
     )

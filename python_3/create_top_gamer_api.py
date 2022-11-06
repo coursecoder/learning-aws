@@ -2,7 +2,7 @@ import boto3, json, time
 import subprocess
 
 region_name = 'us-east-1'
-function_name = 'get_all_leaderboard'
+function_name = 'get_top_gamers'
 api_name = 'LeaderboardApi'
 
 client = boto3.client('apigateway', region_name)
@@ -16,6 +16,7 @@ response = client.get_resources(
     restApiId=api_id
 )
 
+# this doesn't always get the parent id
 parent_id = response["items"][0]["id"]
 
 # create /leaderboard/top_gamer endpoint
@@ -67,10 +68,10 @@ top_gamer_integration = client.put_integration(
     uri = f"arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/{lambda_arn}/invocations",
     requestTemplates={
         'application/json': '{"statusCode": 200}'
-    # need to add this as mapping template?
-    #{
-    # "path": "$context.resourcePath"
-    #}
+        # need to add this as mapping template?
+        #{
+        # "path": "$context.resourcePath"
+        #}
     }
 )
 
