@@ -51,8 +51,11 @@ python3 ./python_3/add_gsi.py
 aws s3 cp ./python_3/get_all_leaderboard_code.zip s3://$bucket_name/ --cache-control "max-age=0"
 aws s3 cp ./python_3/submit_score_code.zip s3://$bucket_name/ --cache-control "max-age=0"
 
-# create IAM role and GET Lambda 
+# create IAM role and get_all_leaderboard Lambda 
 python3 ./python_3/create_iam_and_lambda.py
+
+# create get_top_gamers Lambda
+python3 ./python_3/create_top_gamers_lambda.py
 
 ######################################### DEPLOY #########################################
 # create LeaderBoardAPI and create /leaderboard endpoint

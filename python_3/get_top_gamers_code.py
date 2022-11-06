@@ -7,15 +7,17 @@ DDB = boto3.resource('dynamodb', region_name='us-east-1')
 TABLE = DDB.Table(TABLE_NAME_STR)
     
 def lambda_handler(event, context):
+    # return top gamers with score greater than 3000
     print("Running scan on index...")
-    # return all gamers
     response = TABLE.query(
-            IndexName=INDEX_NAME_STR,
-            ScanIndexForward=False,
-            KeyConditionExpression=Key('special').eq(1)
-        )  
+        IndexName=INDEX_NAME_STR,
+        ScanIndexForward=False,
+        KeyConditionExpression=Key('special').eq(1) & Key('score').gt(3000),
+    )
         
     data = response['Items']
+    
+
     
     while 'LastEvaluatedKey' in response:
         response = TABLE.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
@@ -43,3 +45,4 @@ def lambda_handler(event, context):
     return_me={"leaderboard_item_arr": data}
     
     return return_me
+    

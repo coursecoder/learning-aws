@@ -21,13 +21,13 @@ def create_lambda(role_arn):
     
     print("Creating next Lambda function...")
     response = client.create_function(
-        FunctionName='submit_score',
+        FunctionName='get_top_gamers',
         Runtime='python3.8',
         Role=role_arn,
-        Handler='submit_score_code.lambda_handler',
+        Handler='get_top_gamers_code.lambda_handler',
         Code={
             'S3Bucket': BUCKET,
-            'S3Key': 'submit_score_code.zip'
+            'S3Key': 'get_top_gamers_code.zip'
         }
     )
     time.sleep(4.4)
