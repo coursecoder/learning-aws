@@ -4,7 +4,7 @@ import openai
 # to use DALL-E openAI you will need to create account and generate key
 # set environment variable named OPENAI_API_KEY
 # if this is not setup the script will automatically use the header image on file
-openai.api_key = "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"
+openai.api_key = OPENAI_API_KEY
 openai.Model.list()
  
 def get_header_img():
