@@ -21,7 +21,7 @@ The purpose of this work is to develop and deploy a leaderboard for your game us
 
 ## Installation Instructions
 ### Step 1: Clone the repo
-<pre><code>git clone https://github.com/Fullstack-Playdough-Team/Team-Playdough.git
+<pre><code>git clone https://github.com/coursecoder/leaderboard-aws.git
 </code></pre>
 ### Step 2: Run setup script
 - Set permissions on the script so that you can run it, and then run it:
