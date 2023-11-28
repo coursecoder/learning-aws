@@ -63,7 +63,7 @@ var LEADERBOARD = (function () {
 				html_str += '</h3>';
 				html_str += '<h4>' + (o.score_int) + '</h4>';
 
-				html_str += '<img src="https://avatars.dicebear.com/api/adventurer-neutral/' + formatWithUnderscores(o.gamer_name_str) + '.svg" alt="Image for ' + o.gamer_name_str + '" />';
+				html_str += '<img src="https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=' + formatWithUnderscores(o.gamer_name_str) + '" alt="Image for ' + o.gamer_name_str + '" />';
 				html_str += '</div>';
 			}
 		}
